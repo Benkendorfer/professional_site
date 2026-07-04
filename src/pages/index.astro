@@ -1,11 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
+import portrait from '../assets/tromso.jpeg';
 ---
 
 <BaseLayout
   title="Dr. Kees Benkendorfer"
   description="Kees Benkendorfer — personal website."
 >
+  <Image
+    src={portrait}
+    alt="Kees Benkendorfer"
+    class="portrait"
+    width={240}
+    densities={[2]}
+  />
   <h1>Home</h1>
   <p>
     I'm currently an AlgoDev intern at Hudson River Trading, though in a (fairly recent) past life I was an experimental particle physicist working on the ATLAS experiment at CERN.
@@ -16,4 +25,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <p>
     Please visit the <a href="/contact">contact page</a> if you would like to get in touch.
   </p>
+
+  <style>
+    .portrait {
+      float: right;
+      width: 240px;
+      height: auto;
+      border-radius: 12px;
+      margin: 0.25rem 0 1rem 1.5rem;
+    }
+
+    /* On narrow screens, stack the photo above the text and center it. */
+    @media (max-width: 30rem) {
+      .portrait {
+        float: none;
+        display: block;
+        margin: 0 auto 1.5rem;
+      }
+    }
+  </style>
 </BaseLayout>
