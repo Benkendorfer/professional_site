@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const email = 'contact@keesbenkendorfer.com';
+---
+
+<BaseLayout
+  title="Contact — Kees Benkendorfer"
+  description="Get in touch with Kees Benkendorfer."
+>
+  <h1>Contact</h1>
+
+  <p>The best way to reach me is by email:</p>
+
+  <p class="email">
+    <a href={`mailto:${email}`}>{email}</a>
+  </p>
+
+  <!-- TODO: Add other links here if you like (LinkedIn, GitHub, etc.). -->
+
+  <style>
+    .email {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  </style>
+</BaseLayout>

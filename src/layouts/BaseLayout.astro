@@ -1,0 +1,161 @@
+---
+// Shared page shell: <head>, global styles, header nav, and footer.
+// Every page wraps its content in this layout so the blog (added later) reuses it.
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Kees Benkendorfer — personal website.',
+} = Astro.props;
+
+const nav = [
+  { href: '/', label: 'Home' },
+  { href: '/contact', label: 'Contact' },
+];
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <a class="brand" href="/">Kees Benkendorfer</a>
+        <nav>
+          {
+            nav.map((item) => (
+              <a
+                href={item.href}
+                aria-current={path === item.href ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </nav>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+
+      <footer>
+        <p>&copy; {new Date().getFullYear()} Kees Benkendorfer</p>
+      </footer>
+    </div>
+
+    <style is:global>
+      :root {
+        --ink: #1a1a1a;
+        --muted: #666;
+        --accent: #2a5db0;
+        --bg: #fdfdfc;
+        --line: #e6e6e3;
+        --measure: 42rem;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+          Arial, sans-serif;
+        font-size: 1.05rem;
+        line-height: 1.65;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .page {
+        max-width: var(--measure);
+        margin: 0 auto;
+        padding: 2.5rem 1.5rem 4rem;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem 1.5rem;
+        padding-bottom: 1.25rem;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        font-weight: 700;
+        font-size: 1.15rem;
+        color: var(--ink);
+      }
+
+      .brand:hover {
+        text-decoration: none;
+      }
+
+      nav {
+        display: flex;
+        gap: 1.25rem;
+      }
+
+      nav a[aria-current='page'] {
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+      main {
+        flex: 1;
+        padding-top: 2rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+        line-height: 1.2;
+        margin: 0 0 0.75rem;
+      }
+
+      footer {
+        margin-top: 3rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      footer p {
+        margin: 0;
+      }
+    </style>
+  </body>
+</html>
