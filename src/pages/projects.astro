@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { linkEvent } from '../utils/analytics.js';
+
+// Separator between links. Built from a char code so the source stays ASCII.
+const DOT = ' ' + String.fromCharCode(0xb7) + ' ';
+
+const projects = [
+  {
+    title: 'ITk detector control system',
+    tags: ['Hardware', 'C++', 'OPC UA', 'SCADA'],
+    description:
+      'I worked for several years on the <a href="https://cds.cern.ch/record/2257755" target="_blank" rel="noopener">ATLAS Inner Tracker (ITk) upgrade</a>, to be installed in <a href="https://atlas.cern/Updates/News/ATLAS-Prepares-HLLHC" target="_blank" rel="noopener">preparation for the High-Luminosity LHC</a> that will start running in the early 2030s. My primary contribution was to the "detector control system," which is a system that controls the delivery of voltage to the detector sensors and front-ends and serves as the primary interface for detector operators. This work consisted of the design and implementation of a control interface built using the WinCC SCADA system, and OPC UA servers to manage the interaction between this system and the detector hardware.',
+    links: [],
+  },
+  {
+    title: 'Resonant anomaly detection for new physics',
+    tags: ['Machine learning', 'Python', 'Statistics', "Data analysis", "Theory"],
+    description:
+      'I was heavily involved in efforts to develop "anomaly detection" methods to use unsupervised and semi-supervised machine learning to search for new particles in Large Hadron Collider data with minimal assumptions about their properties.',
+    parts: [
+      {
+        heading: 'ATLAS weakly-supervised dijet search',
+        description:
+          'This was a model-agnostic search for previously-unobserved resonances in ATLAS data that decay to two jets. Weakly-supervised classifiers were trained to identify statistically anomalous regions of phase space that could be marked for future study. While no statistically significant anomalies were detected in the observed phase space, this search was one of the first successful applications of anomaly detection techniques to real particle data.',
+        links: [
+          { label: 'Phys. Rev. D 112 (2025)', href: 'https://doi.org/10.1103/2yq5-vj59' },
+          { label: 'arXiv:2502.09770', href: 'https://arxiv.org/abs/2502.09770' },
+          { label: 'Inspire', href: 'https://inspirehep.net/literature/2880274' },
+        ],
+      },
+      {
+        heading: 'Simulation-assisted decorrelation',
+        description:
+          "One major challenge with searching for resonant new physics using unsupervised techniques is that the resonant feature often correlates with the classifiers' input features. If any phase space selections are made during an analysis, then the classifier may learn the selection boundary instead of the characteristics of new physics; the result can be a large fake \"bump\" that mimics a discovery. This project developed a technique to mitigate the problem by penalizing the classifier for learning the selection boundary.",
+        links: [
+          { label: 'Phys. Rev. D 104 (2021)', href: 'https://doi.org/10.1103/PhysRevD.104.035003' },
+          { label: 'arXiv:2009.02205', href: 'https://arxiv.org/abs/2009.02205' },
+          { label: 'Inspire', href: 'https://inspirehep.net/literature/1815227' },
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Measurement of ttZ production for EFT limits',
+    tags: ['Machine learning', 'Statistics', 'Data analysis', "Python", "C++"],
+    description:
+      'This project (a work in progress) is the first measurement of ttZ production (a top-quark pair produced together with a Z boson) at the LHC Run 3 energy of 13.6 TeV. This process is very rare, and sensitive to the coupling between the top quark and the Z boson, making it a promising place to look for deviations from the Standard Model using an effective field theory (EFT) approach. This is also the first ttZ analysis to target a phase space in which the top quarks are produced with a high momentum, enabling enhanced background rejection with selections on the collimated decay products of the tops.',
+    links: [],
+  },
+  {
+    title: 'Analytic predictions for the mass of groomed jets',
+    tags: ['QCD', 'Jet substructure', 'Theory'],
+    description:
+      '"Jets" are collimated sprays of high-energy particles produced through QCD interactions; they are very complicated objects with high particle multiplicity, and it can be difficult to reconstruct them in a detector in a way that maps cleanly onto theoretical descriptions. A class of "jet grooming" algorithms can be used to strip soft, wide-angle radiation from jets, leaving a cleaner object that is easier to align between theory and experiment. This project derived analytic QCD predictions for the mass of groomed jets in a "cusp" region where the groomer first starts to impact the distribution.',
+    links: [
+      { label: 'JHEP 11, 188 (2021)', href: 'https://doi.org/10.1007/JHEP11(2021)188' },
+      { label: 'arXiv:2108.02779', href: 'https://arxiv.org/abs/2108.02779' },
+      { label: 'Inspire', href: 'https://inspirehep.net/literature/1900929' },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Projects — Dr. Kees Benkendorfer"
+  description="Selected technical and research projects by Dr. Kees Benkendorfer."
+>
+  <h1>Projects</h1>
+
+  <p>
+    This is a list of research projects I've led or to which I have otherwise made major contributions.
+  </p>
+
+  {
+    projects.map((project) => (
+      <section class="project">
+        <h2>{project.title}</h2>
+        <ul class="tags">
+          {[...project.tags]
+            .sort((a, b) => a.localeCompare(b))
+            .map((tag) => (
+              <li>{tag}</li>
+            ))}
+        </ul>
+        {project.description && <p set:html={project.description} />}
+
+        {project.parts && (
+          <div class="parts">
+            {project.parts.map((part) => (
+              <div class="part">
+                <h3>{part.heading}</h3>
+                <p>{part.description}</p>
+                {part.links.length > 0 && (
+                  <p class="links">
+                    {part.links.map((link, i) => (
+                      <>
+                        {i > 0 && <span class="sep">{DOT}</span>}
+                        <a
+                          href={link.href}
+                          data-umami-event={linkEvent(link.href)}
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          {link.label}
+                        </a>
+                      </>
+                    ))}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {project.links && project.links.length > 0 && (
+          <p class="links">
+            {project.links.map((link, i) => (
+              <>
+                {i > 0 && <span class="sep">{DOT}</span>}
+                <a
+                  href={link.href}
+                  data-umami-event={linkEvent(link.href)}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {link.label}
+                </a>
+              </>
+            ))}
+          </p>
+        )}
+      </section>
+    ))
+  }
+
+  <style>
+    .project {
+      margin: 2rem 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .project h2 {
+      font-size: 1.25rem;
+      margin: 0 0 0.4rem;
+    }
+
+    .tags {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 0.6rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .tags li {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--line);
+      border-radius: 999px;
+      padding: 0.1rem 0.6rem;
+    }
+
+    .project p {
+      margin: 0.4rem 0 0;
+    }
+
+    /* Sub-sections share one continuous left rail so they read as nested
+       parts of the project, not as separate projects. */
+    .parts {
+      margin-top: 1rem;
+      padding-left: 1.1rem;
+      border-left: 2px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+
+    .part h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 0 0 0.15rem;
+      color: var(--muted);
+    }
+
+    .links {
+      font-size: 0.95rem;
+    }
+
+    .sep {
+      color: var(--muted);
+    }
+  </style>
+</BaseLayout>

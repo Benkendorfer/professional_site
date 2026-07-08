@@ -13,10 +13,19 @@ const {
 
 const nav = [
   { href: '/', label: 'Home' },
+  { href: '/experience', label: 'Experience' },
+  { href: '/projects', label: 'Projects' },
   { href: '/contact', label: 'Contact' },
 ];
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+
+// Build date shown in the footer. Recomputed each time the site is rebuilt/deployed.
+const lastUpdated = new Date().toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 ---
 
 <!doctype html>
@@ -58,6 +67,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
       <footer>
         <p>&copy; {new Date().getFullYear()} Kees Benkendorfer</p>
+        <p class="updated">Last updated on {lastUpdated}.</p>
       </footer>
     </div>
 
@@ -159,6 +169,11 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 
       footer p {
         margin: 0;
+      }
+
+      footer .updated {
+        margin-top: 0.2rem;
+        font-size: 0.85rem;
       }
     </style>
   </body>

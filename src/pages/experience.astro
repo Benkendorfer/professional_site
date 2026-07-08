@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { linkEvent } from '../utils/analytics.js';
+
+// Separator used between org and location, and between publication links.
+const DOT = ' \u00b7 ';
+
+// Jobs and education interwoven into a single reverse-chronological timeline.
+const timeline = [
+  {
+    title: 'Algorithm Developer Intern',
+    org: 'Hudson River Trading',
+    location: 'New York, NY, USA',
+    dates: 'May 2026 \u2013 Present',
+    summary:
+      "I am currently an Algorithm Developer intern at Hudson River Trading, a proprietary trading firm known for an engineering-oriented approach to markets.",
+  },
+  {
+    title: 'Postdoctoral Researcher',
+    org: 'University of Victoria \u00b7 ATLAS Collaboration',
+    location: 'Geneva, Switzerland',
+    dates: 'Jan 2026 \u2013 May 2026',
+    summary:
+      "As an Activity Coordinator for the ATLAS Inner Tracker (ITk) upgrade project's Detector Control System, I managed a team of ~10 engineers and physicists to deliver a SCADA system for safe, latency-sensitive detector operation. I also contributed to the data acquisition system for ITk, and led large-scale data analysis projects within the ATLAS Collaboration.",
+  },
+  {
+    title: 'PhD in Experimental Particle Physics',
+    org: 'Harvard University',
+    location: 'Cambridge, MA, USA',
+    dates: 'Sep 2021 \u2013 Nov 2025',
+    summary:
+      'My doctoral research revolved around searches for new physics at the Large Hadron Collider, where I developed machine-learning methods for model-independent anomaly detection and built large-scale statistical models to perform precise measurements on weak signals in noisy datasets. I also worked on the ATLAS Inner Tracker (ITk) detector upgrade, contributing to the control and data-acquisition software for a new silicon tracking system.',
+  },
+  {
+    title: 'Reactor Operator & Senior Reactor Operator',
+    org: 'Reed Research Reactor',
+    location: 'Portland, OR, USA',
+    dates: 'Jun 2018 \u2013 Aug 2021',
+    summary:
+      'I earned Reactor Operator (RO) and Senior Reactor Operator (SRO) licenses from the U.S. Nuclear Regulatory Commission (NRC), and was promoted to Operations Supervisor in my final year at the reactor. As Operations Supervisor, I oversaw the day-to-day operations of the reactor facility and managed a team of 30+ operators and technicians. I directed reactor operations, maintenance schedules, fuel handling, and experimental activities, ensuring compliance with federal and state regulatory requirements and strict safety protocols.',
+  },
+  {
+    title: 'BA in Physics',
+    org: 'Reed College',
+    location: 'Portland, OR, USA',
+    dates: 'Sep 2017 \u2013 Jun 2021',
+  },
+];
+
+const publications = [
+  {
+    cite: 'ATLAS Collaboration, “Weakly supervised anomaly detection for resonant new physics in the dijet final state using proton\u2013proton collisions at √s = 13 TeV with the ATLAS detector,” Phys. Rev. D 112, 072009 (2025).',
+    doi: 'https://doi.org/10.1103/2yq5-vj59',
+    arxiv: 'https://arxiv.org/abs/2502.09770',
+    inspire: 'https://inspirehep.net/literature/2880274',
+  },
+  {
+    cite: '<strong>K. Benkendorfer</strong> and A. J. Larkoski, “Grooming at the cusp: all-orders predictions for the transition region of jet groomers,” J. High Energy Phys. 11, 188 (2021).',
+    doi: 'https://doi.org/10.1007/JHEP11(2021)188',
+    arxiv: 'https://arxiv.org/abs/2108.02779',
+    inspire: 'https://inspirehep.net/literature/1900929',
+  },
+  {
+    cite: 'G. Kasieczka, B. Nachman, D. Shih, et al. (incl. <strong>K. Benkendorfer</strong>), “The LHC Olympics 2020: a community challenge for anomaly detection in high energy physics,” Rep. Prog. Phys. 84, 124201 (2021).',
+    doi: 'https://doi.org/10.1088/1361-6633/ac36b9',
+    arxiv: 'https://arxiv.org/abs/2101.08320',
+    inspire: 'https://inspirehep.net/literature/1842125',
+  },
+  {
+    cite: '<strong>K. Benkendorfer</strong>, L. Le Pottier, and B. Nachman, “Simulation-assisted decorrelation for resonant anomaly detection,” Phys. Rev. D 104, 035003 (2021).',
+    doi: 'https://doi.org/10.1103/PhysRevD.104.035003',
+    arxiv: 'https://arxiv.org/abs/2009.02205',
+    inspire: 'https://inspirehep.net/literature/1815227',
+  },
+];
+---
+
+<BaseLayout
+  title="Experience — Dr. Kees Benkendorfer"
+  description="Professional experience, education, and publications of Dr. Kees Benkendorfer."
+>
+  <h1>Experience</h1>
+
+  A timeline of my work experience is below. For details on specific research projects, please refer to the <a href="/projects">projects page</a>.
+
+  {
+    timeline.map((entry) => (
+      <section class="entry">
+        <div class="entry-head">
+          <h2>{entry.title}</h2>
+          <span class="dates">{entry.dates}</span>
+        </div>
+        <p class="org">
+          {entry.org}
+          {DOT}
+          {entry.location}
+        </p>
+        {entry.summary && <p class="summary">{entry.summary}</p>}
+      </section>
+    ))
+  }
+
+  <h2 class="section-title">Selected Publications</h2>
+
+  The ATLAS Collaboration, like many other collaborations in high-energy physics, publishes papers as a unit, with alphabetized author lists. Papers listed below as the "ATLAS Collaboration" are those to which I made a leading contribution.
+
+  <ul class="pubs">
+    {
+      publications.map((pub) => (
+        <li>
+          <Fragment set:html={pub.cite} />{' '}
+          <a
+            href={pub.doi}
+            data-umami-event={linkEvent(pub.doi)}
+            target="_blank"
+            rel="noopener"
+          >
+            DOI
+          </a>
+          {DOT}
+          <a
+            href={pub.arxiv}
+            data-umami-event={linkEvent(pub.arxiv)}
+            target="_blank"
+            rel="noopener"
+          >
+            arXiv
+          </a>
+          {pub.inspire && (
+            <Fragment>
+              {DOT}
+              <a
+                href={pub.inspire}
+                data-umami-event={linkEvent(pub.inspire)}
+                target="_blank"
+                rel="noopener"
+              >
+                Inspire
+              </a>
+            </Fragment>
+          )}
+        </li>
+      ))
+    }
+  </ul>
+
+  <style>
+    .entry {
+      margin: 1.5rem 0;
+    }
+
+    .entry-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.25rem 1rem;
+    }
+
+    .entry-head h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+
+    .dates {
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .org {
+      margin: 0.1rem 0 0.5rem;
+      color: var(--muted);
+    }
+
+    .summary {
+      margin: 0.4rem 0 0;
+    }
+
+    .section-title {
+      margin-top: 2.5rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .pubs {
+      padding-left: 1.1rem;
+    }
+
+    .pubs li {
+      margin: 0.75rem 0;
+    }
+  </style>
+</BaseLayout>
