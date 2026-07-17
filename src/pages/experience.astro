@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { Image } from 'astro:assets';
 import { linkEvent } from '../utils/analytics.js';
+import hrtLogo from '../assets/logos/hrt.svg';
 
 // Separator used between org and location, and between publication links.
 const DOT = ' \u00b7 ';
@@ -8,12 +10,15 @@ const DOT = ' \u00b7 ';
 // Jobs and education interwoven into a single reverse-chronological timeline.
 const timeline = [
   {
-    title: 'Algorithm Developer',
+    title: 'Algorithm Developer Intern (Incoming Full-time)',
     org: 'Hudson River Trading',
     location: 'New York, NY, USA',
     dates: 'May 2026 \u2013 Present',
+    // logo: hrtLogo,
+    // logoAlt: 'Hudson River Trading logo',
+    // url: 'https://www.hudsonrivertrading.com',
     summary:
-      "I am currently an (incoming) Algorithm Developer at Hudson River Trading, a proprietary trading firm known for an engineering-oriented approach to markets. I started as an intern in May 2026, and am converting to full-time in August 2026.",
+      "I am an incoming Algorithm Developer at Hudson River Trading. I started as an intern in May 2026, and am converting to full-time in August 2026.",
   },
   {
     title: 'Postdoctoral Researcher',
@@ -86,16 +91,32 @@ const publications = [
   {
     timeline.map((entry) => (
       <section class="entry">
-        <div class="entry-head">
-          <h2>{entry.title}</h2>
-          <span class="dates">{entry.dates}</span>
+        {entry.logo &&
+          (entry.url ? (
+            <a
+              href={entry.url}
+              class="logo-link"
+              data-umami-event={linkEvent(entry.url)}
+              target="_blank"
+              rel="noopener"
+            >
+              <Image src={entry.logo} alt={entry.logoAlt} class="logo" width={64} />
+            </a>
+          ) : (
+            <Image src={entry.logo} alt={entry.logoAlt} class="logo" width={64} />
+          ))}
+        <div class="entry-body">
+          <div class="entry-head">
+            <h2>{entry.title}</h2>
+            <span class="dates">{entry.dates}</span>
+          </div>
+          <p class="org">
+            {entry.org}
+            {DOT}
+            {entry.location}
+          </p>
+          {entry.summary && <p class="summary">{entry.summary}</p>}
         </div>
-        <p class="org">
-          {entry.org}
-          {DOT}
-          {entry.location}
-        </p>
-        {entry.summary && <p class="summary">{entry.summary}</p>}
       </section>
     ))
   }
@@ -146,7 +167,27 @@ const publications = [
 
   <style>
     .entry {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
       margin: 1.5rem 0;
+    }
+
+    .entry-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .logo-link {
+      flex-shrink: 0;
+      display: block;
+      line-height: 0;
+    }
+
+    .logo {
+      width: 64px;
+      height: auto;
+      border-radius: 8px;
     }
 
     .entry-head {
