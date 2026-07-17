@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { Image } from 'astro:assets';
 import { linkEvent } from '../utils/analytics.js';
 import hrtLogo from '../assets/logos/hrt.svg';
+import uvicLogo from '../assets/logos/University_of_Victoria_Logo.svg';
 
 // Separator used between org and location, and between publication links.
 const DOT = ' \u00b7 ';
@@ -14,9 +15,6 @@ const timeline = [
     org: 'Hudson River Trading',
     location: 'New York, NY, USA',
     dates: 'May 2026 \u2013 Present',
-    // logo: hrtLogo,
-    // logoAlt: 'Hudson River Trading logo',
-    // url: 'https://www.hudsonrivertrading.com',
     summary:
       "I am an incoming Algorithm Developer at Hudson River Trading. I started as an intern in May 2026, and am converting to full-time in August 2026.",
   },
@@ -185,8 +183,10 @@ const publications = [
     }
 
     .logo {
-      width: 64px;
+      width: auto;
       height: auto;
+      max-width: 64px;
+      max-height: 56px;
       border-radius: 8px;
     }
 
