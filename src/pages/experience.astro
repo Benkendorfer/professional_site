@@ -1,18 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { Image } from 'astro:assets';
 import { linkEvent } from '../utils/analytics.js';
-import hrtLogo from '../assets/logos/hrt.svg';
-import uvicLogo from '../assets/logos/University_of_Victoria_Logo.svg';
 
 // Separator used between org and location, and between publication links.
 const DOT = ' \u00b7 ';
 
 // Jobs and education interwoven into a single reverse-chronological timeline.
+// Each `org` is a list of segments so individual institutions can link out.
 const timeline = [
   {
     title: 'Algorithm Developer Intern (Incoming Full-time)',
-    org: 'Hudson River Trading',
+    org: [{ name: 'Hudson River Trading', url: 'https://www.hudsonrivertrading.com' }],
     location: 'New York, NY, USA',
     dates: 'May 2026 \u2013 Present',
     summary:
@@ -20,7 +18,10 @@ const timeline = [
   },
   {
     title: 'Postdoctoral Researcher',
-    org: 'University of Victoria \u00b7 ATLAS Collaboration',
+    org: [
+      { name: 'University of Victoria', url: 'https://www.uvic.ca' },
+      { name: 'ATLAS Collaboration', url: 'https://atlas.cern' },
+    ],
     location: 'Geneva, Switzerland',
     dates: 'Jan 2026 \u2013 May 2026',
     summary:
@@ -28,7 +29,7 @@ const timeline = [
   },
   {
     title: 'PhD in Experimental Particle Physics',
-    org: 'Harvard University',
+    org: [{ name: 'Harvard University', url: 'https://www.harvard.edu' }],
     location: 'Cambridge, MA, USA',
     dates: 'Sep 2021 \u2013 Nov 2025',
     summary:
@@ -36,7 +37,7 @@ const timeline = [
   },
   {
     title: 'Reactor Operator & Senior Reactor Operator',
-    org: 'Reed Research Reactor',
+    org: [{ name: 'Reed Research Reactor', url: 'https://reactor.reed.edu' }],
     location: 'Portland, OR, USA',
     dates: 'Jun 2018 \u2013 Aug 2021',
     summary:
@@ -44,7 +45,7 @@ const timeline = [
   },
   {
     title: 'BA in Physics',
-    org: 'Reed College',
+    org: [{ name: 'Reed College', url: 'https://www.reed.edu' }],
     location: 'Portland, OR, USA',
     dates: 'Sep 2017 \u2013 Jun 2021',
   },
@@ -89,32 +90,32 @@ const publications = [
   {
     timeline.map((entry) => (
       <section class="entry">
-        {entry.logo &&
-          (entry.url ? (
-            <a
-              href={entry.url}
-              class="logo-link"
-              data-umami-event={linkEvent(entry.url)}
-              target="_blank"
-              rel="noopener"
-            >
-              <Image src={entry.logo} alt={entry.logoAlt} class="logo" width={64} />
-            </a>
-          ) : (
-            <Image src={entry.logo} alt={entry.logoAlt} class="logo" width={64} />
-          ))}
-        <div class="entry-body">
-          <div class="entry-head">
-            <h2>{entry.title}</h2>
-            <span class="dates">{entry.dates}</span>
-          </div>
-          <p class="org">
-            {entry.org}
-            {DOT}
-            {entry.location}
-          </p>
-          {entry.summary && <p class="summary">{entry.summary}</p>}
+        <div class="entry-head">
+          <h2>{entry.title}</h2>
+          <span class="dates">{entry.dates}</span>
         </div>
+        <p class="org">
+          {entry.org.map((seg, i) => (
+            <Fragment>
+              {i > 0 && DOT}
+              {seg.url ? (
+                <a
+                  href={seg.url}
+                  data-umami-event={linkEvent(seg.url)}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {seg.name}
+                </a>
+              ) : (
+                seg.name
+              )}
+            </Fragment>
+          ))}
+          {DOT}
+          {entry.location}
+        </p>
+        {entry.summary && <p class="summary">{entry.summary}</p>}
       </section>
     ))
   }
@@ -165,29 +166,7 @@ const publications = [
 
   <style>
     .entry {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
       margin: 1.5rem 0;
-    }
-
-    .entry-body {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .logo-link {
-      flex-shrink: 0;
-      display: block;
-      line-height: 0;
-    }
-
-    .logo {
-      width: auto;
-      height: auto;
-      max-width: 64px;
-      max-height: 56px;
-      border-radius: 8px;
     }
 
     .entry-head {
